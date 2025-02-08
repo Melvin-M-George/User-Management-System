@@ -1,0 +1,158 @@
+<% include("../layouts/header.ejs") %>
+
+<style>
+  body {
+      font-family: 'Arial', sans-serif; /* Clean font */
+      background-color: #f2f2f2; /* Light gray background */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center; /* Center content horizontally */
+      align-items: center; /* Center content vertically */
+      height: 100vh; /* Full viewport height */
+  }
+
+  .login-container {
+      text-align: center; /* Center text within the container */
+  }
+
+  h1 {
+      color: #333; /* Dark gray for the heading */
+      margin-bottom: 20px; /* Space below the heading */
+      font-size: 2.5rem; /* Larger font size */
+  }
+
+  h3 {
+      color: #dc3545; /* Red for error messages */
+      margin-bottom: 20px; /* Space below the message */
+  }
+
+  form {
+      background-color: white; /* White background for the form */
+      padding: 40px; /* Inner spacing */
+      border-radius: 12px; /* Rounded corners */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+      width: 100%; /* Full width for the form */
+      max-width: 400px; /* Max width for the form */
+      margin: auto; /* Center the form */
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="submit"] {
+      width: 100%; /* Full width for inputs */
+      padding: 12px; /* Inner spacing */
+      margin: 12px 0; /* Vertical margin */
+      border: 1px solid #ced4da; /* Light gray border */
+      border-radius: 8px; /* Rounded corners */
+      box-sizing: border-box; /* Include padding in width calculation */
+      font-size: 1rem; /* Font size */
+      transition: border-color 0.3s; /* Smooth transition */
+  }
+
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+      border-color: #007bff; /* Change border color on focus */
+      outline: none; /* Remove outline */
+  }
+
+  input[type="submit"] {
+      background-color: #007bff; /* Blue color */
+      color: white; /* White text color */
+      cursor: pointer; /* Pointer cursor on hover */
+      font-weight: bold; /* Bold text for the button */
+      transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+  }
+
+  input[type="submit"]:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+      transform: translateY(-2px); /* Slight lift effect */
+  }
+
+  @media (max-width: 480px) {
+      h1 {
+          font-size: 2rem; /* Smaller heading on mobile */
+      }
+
+      form {
+          padding: 30px; /* Reduce padding on mobile */
+      }
+
+      input[type="email"],
+      input[type="password"],
+      input[type="submit"] {
+          font-size: 0.9rem; /* Smaller font size on mobile */
+      }
+  }
+  a {
+    display: inline-block;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin: 5px;
+  }
+  #emailerror,#passworderror{
+    color: red;
+  }
+</style>
+
+<div class="login-container">
+  <h1>Login</h1>
+
+  <% if (typeof message !== "undefined") { %>
+      <h3><%= message %></h3>
+  <% } %>
+
+  <form action="" method="post">
+    <span id="emailerror"></span>
+    <input type="email" name="email" placeholder="Enter email" id="email" />
+    <span id="passworderror"></span>
+      <input type="password" name="password"  placeholder="Enter password" id="password" />
+      <input type="submit" onclick="validateForm(event)" value="Login" /><br><br>
+
+      <a href="/register">New User?</a>
+      <a href="/admin">Admin Login</a>
+  </form>
+ 
+
+
+</div>
+
+
+
+
+<script>
+    function validateForm(event) {
+        // Get form inputs
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,6}$/; // Simple email regex
+
+        // Check email format
+        if (!email.match(emailPattern)) {
+            document.getElementById('emailerror').innerHTML = "Please enter a valid email address."
+            event.preventDefault(); // Prevent form submission
+            return false;
+        }
+
+        // Check password is not empty
+        if (password.length < 5) {
+            document.getElementById('passworderror').innerHTML = "Password must be at least 5 characters long."
+            event.preventDefault();
+            return false;
+        }
+
+        return true; // Submit form if validation passes
+    }
+</script>
+
+
+
+
+
+<% include("../layouts/footer.ejs") %>

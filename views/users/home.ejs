@@ -1,0 +1,85 @@
+
+<% include("../layouts/header.ejs") %>
+
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9; /* Light background color */
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center align items */
+    }
+
+    h3 {
+        color: #333; /* Dark gray for the heading */
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 2rem; /* Larger font size for the heading */
+    }
+
+    table {
+        width: 60%; /* Set a relative width for the table */
+        border-collapse: collapse; /* Remove space between borders */
+        background-color: white; /* White background for the table */
+        border-radius: 10px; /* Rounded corners for the table */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        margin-bottom: 20px; /* Space below the table */
+        overflow: hidden; /* Prevent content overflow */
+    }
+
+    td {
+        padding: 15px; /* Add padding for table cells */
+        border: 1px solid #dee2e6; /* Light gray border */
+        text-align: left; /* Align text to the left */
+        color: #555; /* Darker gray for table text */
+    }
+
+    img {
+        border-radius: 10px; /* Rounded corners for the image */
+        max-width: 60%; /* Responsive image */
+        height: auto; /* Maintain aspect ratio */
+        margin-bottom: 10px; /* Space below the image */
+    }
+
+    a {
+        text-decoration: none; /* Remove underline */
+        color: white; /* White text color */
+        background-color: #007bff; /* Bootstrap primary color */
+        padding: 10px 20px; /* Add padding to the links */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s; /* Smooth transition for hover */
+        margin: 5px; /* Space between buttons */
+        display: inline-block; /* Make links block level */
+    }
+
+    a:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+</style>
+
+<h3>Welcome, <%= user.name %></h3>
+
+<table>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <img src="userImages/<%= user.image %>" alt="<%= user.image %>">
+        </td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><%= user.email %></td>
+    </tr>
+    <tr>
+        <td>Mobile</td>
+        <td><%= user.mobile %></td>
+    </tr>
+</table>
+
+<a href="/edit?id=<%= user._id %>">Edit</a>
+<a href="/logout">Logout</a>
+
+
+<% include("../layouts/header.ejs") %>

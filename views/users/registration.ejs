@@ -1,0 +1,185 @@
+<% include("../layouts/header.ejs") %>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif; /* Clean font */
+        background-color: #f2f2f2; /* Light gray background */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+        height: 100vh; /* Full viewport height */
+    }
+
+    .registration-container {
+        text-align: center; /* Center text within the container */
+        background-color: white; /* White background for the form */
+        padding: 40px; /* Inner spacing */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        width: 100%; /* Full width for the form */
+        max-width: 400px; /* Max width for the form */
+        margin: auto; /* Center the form */
+    }
+
+    h1 {
+        color: #333; /* Dark gray for the heading */
+        margin-bottom: 20px; /* Space below the heading */
+        font-size: 2.5rem; /* Larger font size */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"],
+    input[type="submit"] {
+        width: 100%; /* Full width for inputs */
+        padding: 12px; /* Inner spacing */
+        margin: 12px 0; /* Vertical margin */
+        border: 1px solid #ced4da; /* Light gray border */
+        border-radius: 8px; /* Rounded corners */
+        box-sizing: border-box; /* Include padding in width calculation */
+        font-size: 1rem; /* Font size */
+        transition: border-color 0.3s; /* Smooth transition */
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="file"]:focus {
+        border-color: #007bff; /* Change border color on focus */
+        outline: none; /* Remove outline */
+    }
+
+    input[type="submit"] {
+        background-color: #007bff; /* Blue color */
+        color: white; /* White text color */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-weight: bold; /* Bold text for the button */
+        transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+        transform: translateY(-2px); /* Slight lift effect */
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 2rem; /* Smaller heading on mobile */
+        }
+
+        .registration-container {
+            padding: 30px; /* Reduce padding on mobile */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        input[type="submit"] {
+            font-size: 0.9rem; /* Smaller font size on mobile */
+        }
+    }
+    #emailerror,#passworderror,#nameerror,#mnoerror{
+    color: red;
+  }
+  a {
+        text-decoration: none;
+        color: #3498db;
+        margin-top: 10px;
+    }
+
+    a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+
+<div class="registration-container">
+    <h1>User Registration Form</h1>
+    <% if (typeof error_message !== "undefined") { %>
+        <p style="color: red;"><%=  error_message %></p>
+    <% } %>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        <span id="nameerror"></span>
+        <input type="text" id="name" name="name" placeholder="Enter name" required>
+        
+        <span id="emailerror"></span>
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
+        
+        <span id="mnoerror"></span>
+        <input type="text" id="mno" name="mno" placeholder="Enter Mobile number" required>
+        
+        <input type="file" name="image" required>
+        <span id="passworderror"></span>
+        <input type="password" id="password" name="password" placeholder="Enter Password" required>
+        <input type="submit" onclick="validateForm(event)" value="Register">
+    </form>
+
+    <% if (typeof message !== "undefined") { %>
+        <p style="color: green;"><%= message %></p>
+    <% } %>
+
+    <a href="/login">Go back to Login</a>
+</div>
+
+<script>
+    // Placeholder for registered emails for demonstration
+    const registeredEmails = ["test@example.com", "user@domain.com"];
+
+    function validateForm(event) {
+        // Get form inputs
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const mno = document.getElementById('mno').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,6}$/; // Simple email regex
+        const namePattern = /^[a-zA-Z\s]+$/; // Name should only contain letters and spaces
+        const mnoPattern = /^[1-9][0-9]{9}$/; // Mobile number must be exactly 10 digits and not start with 0
+
+        let valid = true;
+
+        // Name validation
+        if (!name.match(namePattern)) {
+            document.getElementById('nameerror').innerHTML = "Name should only contain letters.";
+            valid = false;
+        } else {
+            document.getElementById('nameerror').innerHTML = "";
+        }
+
+        // Mobile number validation
+        if (!mno.match(mnoPattern)) {
+            document.getElementById('mnoerror').innerHTML = "Mobile number must be exactly 10 digits and cannot start with zero.";
+            valid = false;
+        } else {
+            document.getElementById('mnoerror').innerHTML = "";
+        }
+
+        // Email validation
+        if (!email.match(emailPattern)) {
+            document.getElementById('emailerror').innerHTML = "Please enter a valid email address.";
+            valid = false;
+        } else if (registeredEmails.includes(email)) {
+            document.getElementById('emailerror').innerHTML = "This email is already registered.";
+            valid = false;
+        } else {
+            document.getElementById('emailerror').innerHTML = "";
+        }
+
+        // Password validation
+        if (password.length < 5) {
+            document.getElementById('passworderror').innerHTML = "Password must be at least 5 characters long.";
+            valid = false;
+        } else {
+            document.getElementById('passworderror').innerHTML = "";
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    }
+</script>
+
+<% include("../layouts/footer.ejs") %>

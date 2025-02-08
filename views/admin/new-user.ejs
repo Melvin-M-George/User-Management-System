@@ -1,0 +1,166 @@
+<% include("../layouts/header.ejs") %>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center content */
+        justify-content: center;
+        height: 100vh; /* Full height for centering */
+    }
+
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-weight: 700;
+        font-size: 2.5rem;
+    }
+
+    form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        width: 300px; /* Set width for the form */
+        text-align: center; /* Center align form elements */
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="file"]:focus {
+        border-color: #3498db;
+        outline: none; /* Remove default outline */
+    }
+
+    input[type="submit"] {
+        background-color: #28a745; /* Green color for the button */
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+        width: 100%;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #218838; /* Darker green on hover */
+    }
+
+    .error-message {
+        color: red;
+        font-size: 0.85rem;
+        text-align: left;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #3498db;
+        margin-top: 10px;
+    }
+
+    a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+
+<h1>Add New User</h1>
+
+<form action="" id="addUserForm" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <input type="text" name="name" placeholder="Enter name" required>
+    <span id="name-error" class="error-message"></span>
+
+    <input type="email" name="email" placeholder="Enter email" required>
+    <span id="email-error" class="error-message"></span>
+
+    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+    <span id="password-error" class="error-message"></span>
+
+    <input type="text" name="mno" placeholder="Enter Mobile number" required>
+    <span id="mno-error" class="error-message"></span>
+
+    <input type="file" name="image" required>
+    <span id="image-error" class="error-message"></span>
+
+    <input type="submit" value="Add User">
+</form>
+
+<a href="/admin/dashboard">Go back</a>
+
+<script>
+    function validateForm() {
+        let isValid = true;
+
+        // Get form values
+        const name = document.forms["addUserForm"]["name"].value.trim();
+        const email = document.forms["addUserForm"]["email"].value.trim();
+        const password = document.forms["addUserForm"]["password"].value.trim();
+        const mobile = document.forms["addUserForm"]["mno"].value.trim();
+        const image = document.forms["addUserForm"]["image"].value.trim();
+
+        // Clear all previous error messages
+        document.getElementById("name-error").innerHTML = "";
+        document.getElementById("email-error").innerHTML = "";
+        document.getElementById("password-error").innerHTML = "";
+        document.getElementById("mno-error").innerHTML = "";
+        document.getElementById("image-error").innerHTML = "";
+
+        // Validate name (letters and spaces only)
+        const namePattern = /^[A-Za-z\s]+$/;
+        if (!name.match(namePattern)) {
+            document.getElementById("name-error").innerHTML = "Name should contain only letters and spaces.";
+            isValid = false;
+        }
+
+        // Validate email using a simple pattern
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!email.match(emailPattern)) {
+            document.getElementById("email-error").innerHTML = "Please enter a valid email address.";
+            isValid = false;
+        }
+
+        // Validate mobile number (10 digits)
+        const mobilePattern = /^\d{10}$/;
+        if (!mobile.match(mobilePattern)) {
+            document.getElementById("mno-error").innerHTML = "Mobile number must be 10 digits.";
+            isValid = false;
+        }
+
+        // Validate password (minimum 5 characters)
+        if (password.length < 5) {
+            document.getElementById("password-error").innerHTML = "Password must be at least 5 characters long.";
+            isValid = false;
+        }
+
+        // Validate image file type (jpg, jpeg, png, gif)
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(image)) {
+            document.getElementById("image-error").innerHTML = "Please upload a valid image file (jpg, jpeg, png, gif).";
+            isValid = false;
+        }
+
+        return isValid; // If all validations pass, form will be submitted
+    }
+</script>
+
+<% include("../layouts/footer.ejs") %>
